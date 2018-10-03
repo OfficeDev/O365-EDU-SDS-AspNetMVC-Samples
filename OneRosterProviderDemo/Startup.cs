@@ -60,8 +60,8 @@ namespace OneRosterProviderDemo
             }
 
             app.UseStaticFiles();
-            app.UseAuthentication();
-            app.UseOauthMessageSigning();
+            //app.UseAuthentication();
+            //app.UseOauthMessageSigning();
             app.UseMvc();
         }
     }

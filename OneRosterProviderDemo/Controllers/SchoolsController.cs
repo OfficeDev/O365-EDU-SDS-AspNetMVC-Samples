@@ -101,6 +101,8 @@ namespace OneRosterProviderDemo.Controllers
                 .Include(e => e.School)
                 .Where(e => e.IMSClass.SchoolOrgId == id);
 
+            enrollments = ApplyBinding(enrollments);
+
             if(!enrollments.Any())
             {
                 return NotFound();
@@ -114,7 +116,7 @@ namespace OneRosterProviderDemo.Controllers
             }
             serializer.writer.WriteEndArray();
 
-            return JsonOk(serializer.Finish());
+            return JsonOk(serializer.Finish(), ResponseCount);
         }
 
         // GET ims/oneroster/v1p1/schools/{id}/classes
@@ -128,6 +130,8 @@ namespace OneRosterProviderDemo.Controllers
                 .Include(c => c.School)
                 .Where(c => c.SchoolOrgId == id);
 
+            imsClasses = ApplyBinding(imsClasses);
+
             if(!imsClasses.Any())
             {
                 return NotFound();
@@ -140,7 +144,7 @@ namespace OneRosterProviderDemo.Controllers
                 imsClass.AsJson(serializer.writer, BaseUrl());
             }
             serializer.writer.WriteEndArray();
-            return JsonOk(serializer.Finish());
+            return JsonOk(serializer.Finish(), ResponseCount);
         }   
 
         // GET ims/oneroster/v1p1/schools/{id}/students
@@ -148,9 +152,11 @@ namespace OneRosterProviderDemo.Controllers
         public IActionResult GetStudentsForSchool([FromRoute] string id)
         {
             var students = db.Users
-                .Where(u => u.Role == Vocabulary.RoleType.student)
                 .Include(u => u.UserOrgs).ThenInclude(uo => uo.Org)
-                .Include(u => u.UserAgents).ThenInclude(ua => ua.Agent);
+                .Include(u => u.UserAgents).ThenInclude(ua => ua.Agent)
+                .Where(u => u.Role == Vocabulary.RoleType.student);
+
+            students = ApplyBinding(students);
 
             if(!students.Any())
             {
@@ -170,7 +176,7 @@ namespace OneRosterProviderDemo.Controllers
                 }
             }
             serializer.writer.WriteEndArray();
-            return JsonOk(serializer.Finish());
+            return JsonOk(serializer.Finish(), ResponseCount);
         }
 
         // GET ims/oneroster/v1p1/schools/{id}/teachers
@@ -178,9 +184,11 @@ namespace OneRosterProviderDemo.Controllers
         public IActionResult GetTeachersForSchool([FromRoute] string id)
         {
             var teachers = db.Users
-                .Where(u => u.Role == Vocabulary.RoleType.teacher)
                 .Include(u => u.UserOrgs).ThenInclude(uo => uo.Org)
-                .Include(u => u.UserAgents).ThenInclude(ua => ua.Agent);
+                .Include(u => u.UserAgents).ThenInclude(ua => ua.Agent)
+                .Where(u => u.Role == Vocabulary.RoleType.teacher);
+
+            teachers = ApplyBinding(teachers);
     
             if(!teachers.Any())
             {
@@ -200,7 +208,7 @@ namespace OneRosterProviderDemo.Controllers
                 }
             }
             serializer.writer.WriteEndArray();
-            return JsonOk(serializer.Finish());
+            return JsonOk(serializer.Finish(), ResponseCount);
         }
 
         // GET ims/oneroster/v1p1/schools/{id}/terms

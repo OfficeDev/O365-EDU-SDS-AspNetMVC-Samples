@@ -76,7 +76,7 @@ namespace OneRosterProviderDemo.Controllers
                 return NotFound();
             }
 
-            serializer = new OneRosterSerializer("resources");
+            serializer = new OneRosterSerializer("classes");
             serializer.writer.WriteStartArray();
             foreach (var imsClass in imsClasses)
             {
