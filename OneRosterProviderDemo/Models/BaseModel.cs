@@ -106,7 +106,7 @@ namespace OneRosterProviderDemo.Models
 
                 return (u => (Object)getter.Invoke(u, null));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new InvalidSortFieldException(fieldName);
             }
@@ -254,7 +254,7 @@ namespace OneRosterProviderDemo.Models
                 var comparisonValue = fieldType.IsEnum ? value : Convert.ChangeType(value, fieldType);
 
                 var comparator = fieldType.IsEnum ? typeof(String).GetMethod(ComparatorMap[predicate]) : fieldType.GetMethod(ComparatorMap[predicate]);
-                
+
                 if (fieldType == typeof(String))
                 {
                     var stringComparator = StringComparatorMap[predicate];
@@ -278,7 +278,7 @@ namespace OneRosterProviderDemo.Models
                     return (u => (bool)comparator.Invoke(Enum.GetName(fieldType, getter.Invoke(u, null)).ToLower(), new object[] { comparisonValue }));
                 }
             }
-            catch(Exception e)
+            catch (Exception)
             {
                 throw new InvalidFilterFieldException(dataFieldRaw);
             }
