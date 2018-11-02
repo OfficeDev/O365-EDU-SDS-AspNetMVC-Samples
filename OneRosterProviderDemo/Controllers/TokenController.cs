@@ -1,7 +1,7 @@
 ﻿using System;
 using OneRosterProviderDemo.Models;
 using Microsoft.AspNetCore.Mvc;
-using OneRosterProviderDemo.Middlewares;
+using OneRosterProviderDemo.Middleware;
 
 namespace OneRosterProviderDemo.Controllers
 {
