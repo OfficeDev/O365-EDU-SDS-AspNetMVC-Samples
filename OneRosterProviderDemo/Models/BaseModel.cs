@@ -106,7 +106,7 @@ namespace OneRosterProviderDemo.Models
 
                 return (u => (Object)getter.Invoke(u, null));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new InvalidSortFieldException(fieldName);
             }
@@ -278,7 +278,7 @@ namespace OneRosterProviderDemo.Models
                     return (u => (bool)comparator.Invoke(Enum.GetName(fieldType, getter.Invoke(u, null)).ToLower(), new object[] { comparisonValue }));
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 throw new InvalidFilterFieldException(dataFieldRaw);
             }
