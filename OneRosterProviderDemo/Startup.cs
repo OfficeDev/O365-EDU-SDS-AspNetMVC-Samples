@@ -1,21 +1,17 @@
 ﻿/*
  * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
-* See LICENSE in the project root for license information.
-*/
+ * See LICENSE in the project root for license information.
+ */
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using OneRosterProviderDemo.Models;
-using System;
+using OneRosterProviderDemo.Middleware;
 
 namespace OneRosterProviderDemo
 {
@@ -33,21 +29,24 @@ namespace OneRosterProviderDemo
         {
             Vocabulary.SubjectCodes.Initialize();
 
-            services.AddAuthentication(sharedOptions =>
-            {
-                sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect(opts =>
-            {
-                Configuration.GetSection("AzureAd").Bind(opts);
-                opts.SaveTokens = true;
-            });
+            services
+                .AddAuthentication(sharedOptions =>
+                {
+                    sharedOptions.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddOpenIdConnect(opts =>
+                {
+                    Configuration.GetSection("AzureAd").Bind(opts);
+                    opts.SaveTokens = true;
+                });
+
             services.AddDbContext<ApiContext>(
                 options => options.UseSqlite(Configuration.GetConnectionString("OneRosterProviderDemoEF"))
             );
+            
             services.AddMvc();
         }
 
@@ -59,10 +58,11 @@ namespace OneRosterProviderDemo
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
-            app.UseAuthentication();
-            app.UseOauthMessageSigning();
-            app.UseMvc();
+            app
+                .UseStaticFiles()
+                .UseAuthentication()
+                .UseOauthMessageSigning()
+                .UseMvc();
         }
     }
 }

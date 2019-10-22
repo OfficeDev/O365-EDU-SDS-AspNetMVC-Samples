@@ -1,7 +1,7 @@
 ﻿/*
  * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
-* See LICENSE in the project root for license information.
-*/
+ * See LICENSE in the project root for license information.
+ */
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -12,12 +12,11 @@ namespace OneRosterProviderDemo
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+            .UseStartup<Startup>();
     }
 }

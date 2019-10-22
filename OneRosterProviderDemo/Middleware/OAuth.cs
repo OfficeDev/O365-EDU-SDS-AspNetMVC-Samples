@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using System.Diagnostics;
 
-namespace OneRosterProviderDemo.Middlewares
+namespace OneRosterProviderDemo.Middleware
 {
     public class OAuth
     {

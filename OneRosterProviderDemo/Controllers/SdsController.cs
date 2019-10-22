@@ -36,7 +36,7 @@ namespace OneRosterProviderDemo.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             ViewBag.url = $"{(Request.IsHttps ? "https" : "http")}://{Request.Host}/ims/oneroster/v1p1";
             return View();

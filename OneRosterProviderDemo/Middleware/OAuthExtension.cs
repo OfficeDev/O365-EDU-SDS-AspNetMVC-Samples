@@ -4,11 +4,11 @@
 */
 
 using Microsoft.AspNetCore.Builder;
-using OneRosterProviderDemo.Middlewares;
+using OneRosterProviderDemo.Middleware;
 
-namespace OneRosterProviderDemo
+namespace OneRosterProviderDemo.Middleware
 {
-    public static class MiddlewareExtensions
+    public static class OAuthExtension
     {
         public static IApplicationBuilder UseOauthMessageSigning(this IApplicationBuilder builder)
         {
